@@ -4,14 +4,20 @@
   <meta charset="utf-8">
   
   
-  <title>Tag: 底层编译 | Hexo</title>
+  <title>事件驱动型编程 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/index.html">
+  <meta name="description" content="事件驱动型编程，主体是事件循环，持续监听是否有线程事件触发，并送入线程池中执行预先设定的回调函数，但是回调函数是比较复杂的，如果某一套流程设计多个回调函数，那会造成回调地狱，这时候协程登场，这是程序员层面可以主动控制CPU暂停的方式，通过协程，可以实现类似同步的风格，比如，当线程a运行时需要依赖b，从而主动挂起，去执行b，然后a可以从挂起的位置继续执行，完成任务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件驱动型编程">
+<meta property="og:url" content="http://example.com/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="事件驱动型编程，主体是事件循环，持续监听是否有线程事件触发，并送入线程池中执行预先设定的回调函数，但是回调函数是比较复杂的，如果某一套流程设计多个回调函数，那会造成回调地狱，这时候协程登场，这是程序员层面可以主动控制CPU暂停的方式，通过协程，可以实现类似同步的风格，比如，当线程a运行时需要依赖b，从而主动挂起，去执行b，然后a可以从挂起的位置继续执行，完成任务">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-03-15T20:03:57.000Z">
+<meta property="article:modified_time" content="2025-08-24T13:58:13.426Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="事件驱动">
+<meta property="article:tag" content="协程">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -69,39 +75,55 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" class="archive-article-date">
-  <time class="dt-published" datetime="2025-02-25T14:30:02.000Z" itemprop="datePublished">Feb 25</time>
+        <section id="main"><article id="post-事件驱动型编程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" class="article-date">
+  <time class="dt-published" datetime="2025-03-15T20:03:57.000Z" itemprop="datePublished">2025-03-16</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">库文件与底层编译原理</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      事件驱动型编程
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>事件驱动型编程，主体是事件循环，持续监听是否有线程事件触发，并送入线程池中执行预先设定的回调函数，但是回调函数是比较复杂的，如果某一套流程设计多个回调函数，那会造成回调地狱，这时候协程登场，这是程序员层面可以主动控制CPU暂停的方式，通过协程，可以实现类似同步的风格，比如，当线程a运行时需要依赖b，从而主动挂起，去执行b，然后a可以从挂起的位置继续执行，完成任务</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" data-id="cmepr7bj300009ypvcb1v824h" data-title="事件驱动型编程" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag">事件驱动</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">多线程编程与同步异步思考</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>

@@ -71,6 +71,224 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-事件驱动型编程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" class="article-date">
+  <time class="dt-published" datetime="2025-03-15T20:03:57.000Z" itemprop="datePublished">2025-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/">事件驱动型编程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>事件驱动型编程，主体是事件循环，持续监听是否有线程事件触发，并送入线程池中执行预先设定的回调函数，但是回调函数是比较复杂的，如果某一套流程设计多个回调函数，那会造成回调地狱，这时候协程登场，这是程序员层面可以主动控制CPU暂停的方式，通过协程，可以实现类似同步的风格，比如，当线程a运行时需要依赖b，从而主动挂起，去执行b，然后a可以从挂起的位置继续执行，完成任务</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" data-id="cmepr7bj300009ypvcb1v824h" data-title="事件驱动型编程" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag">事件驱动</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-多线程编程与同步异步的思考" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/" class="article-date">
+  <time class="dt-published" datetime="2025-03-15T11:35:01.000Z" itemprop="datePublished">2025-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/">多线程编程与同步异步思考</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>从线程开始讲起，首先，如果一个程序只有一个线程，效率是很低的。<br>比如说，有一个函数要读写硬盘，这个耗时相对较长，只有一个执行流的话，只能干等。</p>
+<p>如果有多条线程，可以将耗时任务交给线程 B，主线程 A 继续向下运行。<br>那么 B 运行好了怎么办呢？一种解决方案是 <strong>回调函数</strong>：将函数作为参数传给线程中的函数执行。  </p>
+<ul>
+<li>如果主线程不在意结果 → 异步回调  </li>
+<li>如果主线程在意结果 → 通知主线程接手结果</li>
+</ul>
+<p>可以注意到，存在 <strong>同步</strong> 和 <strong>异步</strong> 两种情况：  </p>
+<ul>
+<li><strong>同步</strong>：有等待、依赖的情况，例如线程 A 依赖线程 B，要等 B 执行完才能执行 A  </li>
+<li><strong>异步</strong>：无等待、无依赖，各干各的。<br>以前的单线程编程就是一路执行下去，遇到函数就要等它执行完。</li>
+</ul>
+<p>还有两个概念：<strong>阻塞</strong> 与 <strong>非阻塞</strong>：  </p>
+<ul>
+<li><strong>阻塞</strong>：停下当前线程  </li>
+<li><strong>非阻塞</strong>：不停下当前线程</li>
+</ul>
+<p>这四个词可以组合：  </p>
+<ul>
+<li><strong>阻塞式同步</strong>：A 线程停下，等待 B 线程完成后继续执行  </li>
+<li><strong>非阻塞同步</strong>：A 线程不停下，但一直询问 B 是否完成（资源浪费）  </li>
+<li><strong>阻塞式异步</strong>：A 没有完全依赖 B，但选择在 B 执行时主动暂停，B 完成后继续  </li>
+<li><strong>非阻塞异步</strong>：A 不关心 B，各干各的</li>
+</ul>
+<hr>
+<p>先前看待同步异步不够精准，再复盘一下：  </p>
+<ul>
+<li><strong>同步&#x2F;异步定义多种解释</strong><br>之前关注的更多是“依赖与等待”：</li>
+<li>同步 → 主线程阻塞调用某个函数，需要停下往下执行等待返回  </li>
+<li>异步 → 调用后立马返回，即非阻塞调用</li>
+</ul>
+<p>在 I&#x2F;O 过程中：  </p>
+<ul>
+<li>异步 → I&#x2F;O 函数由内核完成  </li>
+<li>同步 → I&#x2F;O 函数由用户完成</li>
+</ul>
+<p>更深入：  </p>
+<ul>
+<li>I&#x2F;O 事件分为就绪与完成  </li>
+<li>如果内核通知用户就绪，但完成需要用户 → 同步  </li>
+<li>如果内核通知用户完成 → 异步</li>
+</ul>
+<p>在通用编程中，从程序员视角：  </p>
+<ul>
+<li>更关注当前线程是否依赖其他线程（是否阻塞）  </li>
+<li>导致认知偏差，其实是定义冲突造成的</li>
+</ul>
+<p>异步 I&#x2F;O 发展演变：  </p>
+<ul>
+<li>异步 I&#x2F;O 不成熟时 → 用非阻塞调用 + 用户 I&#x2F;O 模拟异步  </li>
+<li>异步 I&#x2F;O 成熟后 → 内核直接完成 I&#x2F;O  </li>
+<li>仍存在概念惯性，导致书本或文章中对同步&#x2F;异步的描述不一致</li>
+</ul>
+<p>还有一种情况：  </p>
+<ul>
+<li>数据就绪后通知用户，用户处理完成再由内核进行 I&#x2F;O → 异步 I&#x2F;O  </li>
+<li>核心关注点 → I&#x2F;O 是否阻塞了线程</li>
+</ul>
+<p>在并发模式中：  </p>
+<ul>
+<li>同步 → 按顺序执行代码  </li>
+<li>异步 → 程序执行依赖系统事件（如中断、信号）驱动</li>
+</ul>
+<hr>
+<p>总结：<br>文章保留了当时的思考过程。<br>异步 I&#x2F;O 的重点是 <strong>I&#x2F;O 本身是异步的</strong>，线程是否阻塞只是程序员视角的体现。<br>理解这一点，有助于在网站上还原原始思考，而不是一味追求“正确”定义。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/" data-id="cmepr7bj800019ypv8kp91apd" data-title="多线程编程与同步异步思考" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">多线程,同步,异步,阻塞,非阻塞</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-设计模式总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2025-03-08T07:18:10.000Z" itemprop="datePublished">2025-03-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式概览</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>设计模式的核心价值不在于发明新技术，而在于对已有技术的最佳实践进行命名、结构化描述和场景化指导。一般都分内部实现端和外部客户端：客户端只关心调用接口产生结果，内部只关心如何实现过程。  </p>
+<p>创造型模式都有抽象与具体的区别。</p>
+<h2 id="创造型模式"><a href="#创造型模式" class="headerlink" title="创造型模式"></a>创造型模式</h2><p>注重创造对象的机制  </p>
+<ul>
+<li><strong>工厂模式</strong>：解耦创建者与具体产品，当要创建新产品时只需要编写新的类接口  </li>
+<li><strong>抽象工厂</strong>：在工厂模式基础上，由一个抽象的族长管理族内接口  </li>
+<li><strong>建造者模式</strong>：通过指挥者唤起建造者，建造者按步骤完成具体部件的构建，步骤由指挥者定制  </li>
+<li><strong>原型模式</strong>：通过具体子原型类执行克隆返回一个一模一样的对象，可结合工厂模式  </li>
+<li><strong>单例模式</strong>：隐藏构造，初次通过全局静态函数创建后无法再创建，只返回已创建对象</li>
+</ul>
+<h2 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h2><p>注重对象和类的组织结构  </p>
+<ul>
+<li><strong>适配器模式</strong>：设计一个类内部维护被利用类的对象，帮助一个类使用被利用类的函数接口  </li>
+<li><strong>桥接模式</strong>：将一个大类的各个维度拆分为几个小类，并在内部相互关联，类似桥  </li>
+<li><strong>组合模式</strong>：类似树结构，树根是抽象类设计顶层功能，树枝负责与树叶（子节点）沟通，树叶实现具体功能  </li>
+<li><strong>装饰器模式</strong>：在基本装饰类的基础上用新的类添加动态新接口，不修改原类结构，像穿脱衣服  </li>
+<li><strong>外观模式</strong>：当功能类结构复杂、函数繁琐时，用一个对外类实现调用内部接口  </li>
+<li><strong>享元模式</strong>：正常创建多个对象时，每个对象的信息都会保存在容器中，但享元会共享已有信息  </li>
+<li><strong>代理模式</strong>：当真正功能类较大时，用代理类虚构相同接口去实际调用功能</li>
+</ul>
+<h2 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h2><p>负责对象间的沟通和职责委派  </p>
+<ul>
+<li><strong>责任链模式</strong>：将任务交给链条上的对象按顺序处理，每个对象指派下一个对象，可随时停止  </li>
+<li><strong>命令模式</strong>：调用类发送命令，用命令类封装指令，简单命令直接执行，复杂命令调用接收类接口执行  </li>
+<li><strong>迭代器模式</strong>：容器类保存数据，迭代器实现操作模板，容器通过迭代器读取数据，实现解耦  </li>
+<li><strong>中介者模式</strong>：取消功能类之间的直接通信，通过中介类完成操作通知和接口调用  </li>
+<li><strong>备忘录模式</strong>：备忘录类保存原发器对象的某时刻信息，由原发器提供接口复原或保存状态，负责人类统一管理  </li>
+<li><strong>观察者模式</strong>：被观察者类维护观察者容器，状态更新时依次调用观察者状态更新函数，实现实时监听  </li>
+<li><strong>状态模式</strong>：上下文类维护状态对象，状态对象由状态类产生，接口相同但功能不同，实现上下文状态转换  </li>
+<li><strong>策略模式</strong>：上下文类维护策略对象，策略对象由实现统一接口的具体策略类产生，算法不同，客户端可主动切换  </li>
+<li><strong>模板方法模式</strong>：将程序执行步骤拆分为函数，在抽象模板类声明并让子类实现，同时声明模板方法规定执行顺序  </li>
+<li><strong>访问者模式</strong>：将被访问对象与访问者分离，被作用元素作为参数传给访问方法，针对不同元素设置方法，访问者接口统一，实现不修改元素类结构</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" data-id="cmepr7bjd00049ypv6omd5le4" data-title="设计模式概览" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-库文件与底层编译原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" class="article-date">
@@ -101,7 +319,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" data-id="cmepqp0xu000090pv23or2g7h" data-title="库文件与底层编译原理" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" data-id="cmepr7bje00059ypvcrl78jb0" data-title="库文件与底层编译原理" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -143,7 +361,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/30/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" data-id="cmepqp0ym000590pv3cyigkrr" data-title="梦开始的地方 2025.1.30" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/01/30/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" data-id="cmepr7bjc00039ypvfy19dau8" data-title="梦开始的地方 2025.1.30" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -170,7 +388,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" rel="tag">库文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" rel="tag">底层编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E6%8A%A5/" rel="tag">日报</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag">事件驱动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">多线程,同步,异步,阻塞,非阻塞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" rel="tag">库文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" rel="tag">底层编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E6%8A%A5/" rel="tag">日报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -180,7 +398,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a>
+      <a href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" style="font-size: 10px;">事件驱动</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 10px;">多线程,同步,异步,阻塞,非阻塞</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -189,7 +407,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">March 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/01/">January 2025</a></li></ul>
     </div>
   </div>
 
@@ -200,6 +418,18 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/">事件驱动型编程</a>
+          </li>
+        
+          <li>
+            <a href="/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/">多线程编程与同步异步思考</a>
+          </li>
+        
+          <li>
+            <a href="/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/">设计模式概览</a>
+          </li>
         
           <li>
             <a href="/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/">库文件与底层编译原理</a>
