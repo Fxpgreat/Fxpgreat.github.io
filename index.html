@@ -175,6 +175,18 @@
 <blockquote>
 <p>启示：新的、更优秀的方案往往不是旧方案的改进，而是 <strong>根本性的思维变革</strong>。</p>
 </blockquote>
+<h2 id="docker如何使用"><a href="#docker如何使用" class="headerlink" title="docker如何使用"></a>docker如何使用</h2><h3 id="1-编写dockerfile"><a href="#1-编写dockerfile" class="headerlink" title="1. 编写dockerfile"></a>1. 编写dockerfile</h3><pre><code>在项目根目录创建一个dockerfile，在里面描述程序运行所需的环境（操作系统，依赖库，运行命令等）
+</code></pre>
+<h3 id="2-构建镜像"><a href="#2-构建镜像" class="headerlink" title="2. 构建镜像"></a>2. 构建镜像</h3><pre><code>docker会读取dockerfile，逐层执行，生成一个镜像，每条指令对应镜像的一层（layer），方便使用
+</code></pre>
+<h3 id="3-运行容器"><a href="#3-运行容器" class="headerlink" title="3.运行容器"></a>3.运行容器</h3><pre><code>容器 = 镜像＋可写层
+</code></pre>
+<h3 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h3><pre><code>查看容器：docker ps
+停止容器：docker stop &lt;id&gt;
+查看容器：docker logs &lt;id&gt;
+进入容器：docker exe -it &lt;id&gt; /bin/bash
+发布容器（将镜像推送到远程仓库）：docker push name
+</code></pre>
 <hr>
 
       
