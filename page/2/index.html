@@ -71,6 +71,71 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-进程间通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="article-date">
+  <time class="dt-published" datetime="2025-03-25T10:32:00.000Z" itemprop="datePublished">2025-03-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/">进程间通信</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>学习完进程之后知道，进程之间是相对独立的，那自然要知道进程之间如何通信，分为三种：管道、内存映射和信号。  </p>
+<h2 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h2><p><strong>匿名管道</strong>：在内核区中开辟一个缓冲区来交流。具体就是一个进程写入数据，另一个进程读取数据，完成通信功能。匿名管道没有文件实体，只是一个缓冲区，用两个文件描述符，一个记录写端，一个记录读端。用 <code>write</code> 和 <code>read</code> 函数来实现通信。注意，管道的读写需要固定，只能读或者只能写，否则会混乱。</p>
+<p><strong>有名管道</strong>：通过一个文件实体（FIFO）来实现通信，通过该文件的文件描述符调用文件 IO 函数实现通信。若要实现双向通信，需要两个管道。</p>
+<p>在实时聊天实现中，由于父子进程共享终端读写，聊天双方可以用两个进程分别实现读写，读用 <code>read</code>，写用 <code>write</code>，文件描述符通过 <code>open</code> 获得。</p>
+<h2 id="信号通信"><a href="#信号通信" class="headerlink" title="信号通信"></a>信号通信</h2><p>信号是一种古老而简单的通信方式，当一个事件发生时，有进程向当前进程发送信号，当前进程便中断去处理。主要用途有两点：告知进程事件发生和强迫进程处理信号。  </p>
+<ul>
+<li>信号简单，不能携带大量信息，优先级高。</li>
+<li><code>alarm</code> 定时器就是一定时间后发送信号。</li>
+<li><code>signal</code> 和 <code>sigaction</code> 可以捕捉指定信号，并用回调函数处理。</li>
+<li>信号集：每个进程 PCB 中列出的信号状态清单，可设置阻塞信号。</li>
+</ul>
+<p>例如解决僵尸进程问题：当子进程结束时会向父进程发送 <code>SIGCHLD</code> 信号，父进程可以用 <code>sigaction</code> 捕捉信号，并执行 <code>wait</code> 回收子进程。</p>
+<h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>内存映射将硬盘数据映射到内存，通过修改内存来同步硬盘。父子进程间通信可在子进程创建前建立映射并获得地址，通过读写共享内存实现通信。  </p>
+<ul>
+<li>可实现文件拷贝：创建两个文件映射区，然后拷贝。</li>
+<li>父子进程可选择匿名映射，不创建文件实体。</li>
+<li>优点：安全性高，即便通信过程中进程崩溃，文件内容不会丢失。</li>
+</ul>
+<h2 id="共享内存（System-V）"><a href="#共享内存（System-V）" class="headerlink" title="共享内存（System V）"></a>共享内存（System V）</h2><p>共享内存是另一种进程通信方式，开辟一块内存让多个进程同时访问。  </p>
+<ul>
+<li>与内存映射不同，共享内存不涉及文件映射。</li>
+<li>速度快，适合少量多次通信。</li>
+<li>安全性不如内存映射，内存重置会丢失通信内容。</li>
+<li>一个进程不能独立删除共享内存，只能标记删除并脱离，所有进程脱离后自动删除。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" data-id="cmezu0u0s001cempvcn6gh1nv" data-title="进程间通信" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">多进程, 进程通信</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-进程状态" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/03/22/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" class="article-date">
@@ -107,7 +172,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/22/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" data-id="cmera87hj001gewpv0w6j92ma" data-title="多进程与进程状态" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/22/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" data-id="cmezu0u0q001aempv4nvg6ojg" data-title="多进程与进程状态" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -166,7 +231,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/18/%E5%A0%86%E5%8C%BA%E5%92%8C%E6%A0%88%E5%8C%BA%E8%A7%A3%E6%9E%90/" data-id="cmera87gg0008ewpvahwyh0ni" data-title="栈区与堆区解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/18/%E5%A0%86%E5%8C%BA%E5%92%8C%E6%A0%88%E5%8C%BA%E8%A7%A3%E6%9E%90/" data-id="cmezu0tzk0008empv0p6kc3us" data-title="栈区与堆区解析" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -227,7 +292,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/18/%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B/" data-id="cmera87gr000pewpvafrjbfy8" data-title="线程和进程" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/18/%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B/" data-id="cmezu0u0l0013empvcxamajcv" data-title="线程和进程" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -268,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/18/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/" data-id="cmera87hh001dewpvgrxifzn4" data-title="虚拟化技术" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/18/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/" data-id="cmezu0u0o0017empvh5nc5tfa" data-title="虚拟化技术" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -309,7 +374,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" data-id="cmera87gd0004ewpv9lr556jq" data-title="事件驱动型编程" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/16/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%9E%8B%E7%BC%96%E7%A8%8B/" data-id="cmezu0tzg0004empvdesu1lvy" data-title="事件驱动型编程" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -413,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/" data-id="cmera87gh0009ewpv47yueibp" data-title="多线程编程与同步异步思考" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/15/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5%E5%BC%82%E6%AD%A5%E7%9A%84%E6%80%9D%E8%80%83/" data-id="cmezu0tzm0009empvfg4s3wcy" data-title="多线程编程与同步异步思考" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -486,7 +551,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" data-id="cmera87hi001eewpvc5yhh4gj" data-title="设计模式概览" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/08/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%80%BB%E7%BB%93/" data-id="cmezu0u0p0018empv2btb4kp5" data-title="设计模式概览" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -530,7 +595,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" data-id="cmera87go000iewpvhs922ump" data-title="库文件与底层编译原理" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/02/25/%E5%BA%93%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/" data-id="cmezu0tzo000bempvcttt1o20" data-title="库文件与底层编译原理" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -572,7 +637,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/01/30/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" data-id="cmera87gj000dewpvfa8p8tit" data-title="梦开始的地方 2025.1.30" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/01/30/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/" data-id="cmezu0tzt000fempv1pr40sm4" data-title="梦开始的地方 2025.1.30" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -636,6 +701,10 @@
       <ul>
         
           <li>
+            <a href="/2025/08/31/%E6%8E%A2%E7%A9%B6docker/">探究docker</a>
+          </li>
+        
+          <li>
             <a href="/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">链表归并排序</a>
           </li>
         
@@ -649,10 +718,6 @@
         
           <li>
             <a href="/2025/03/29/CPU%E5%8E%9F%E7%90%86%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">CPU原理与性能优化</a>
-          </li>
-        
-          <li>
-            <a href="/2025/03/28/%E5%86%85%E5%AD%98%E6%B1%A0%E5%8D%B0%E8%B1%A1/">内存池与内存申请机制</a>
           </li>
         
       </ul>

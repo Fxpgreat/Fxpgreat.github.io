@@ -71,6 +71,127 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-探究docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/08/31/%E6%8E%A2%E7%A9%B6docker/" class="article-date">
+  <time class="dt-published" datetime="2025-08-31T14:47:08.000Z" itemprop="datePublished">2025-08-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/08/31/%E6%8E%A2%E7%A9%B6docker/">探究docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="容器技术的发展与启示"><a href="#容器技术的发展与启示" class="headerlink" title="容器技术的发展与启示"></a>容器技术的发展与启示</h1><p>总的来说，docker就是轻量化的虚拟机，选取了进程运行必须依赖的操作系统模块，进行项目部署。</p>
+<h2 id="容器出现之前：部署的痛点"><a href="#容器出现之前：部署的痛点" class="headerlink" title="容器出现之前：部署的痛点"></a>容器出现之前：部署的痛点</h2><p>在容器（以 <strong>Docker</strong> 为代表的技术）出现之前，程序的部署往往有两类模式：</p>
+<h3 id="1-直接部署"><a href="#1-直接部署" class="headerlink" title="1. 直接部署"></a>1. 直接部署</h3><ul>
+<li><strong>方式</strong>：将程序直接部署到机器上运行，使用 <code>systemd</code> 等守护进程管理业务程序。  </li>
+<li><strong>优点</strong>：方便查看程序运行情况，支持手动&#x2F;自动化启停。  </li>
+<li><strong>缺点</strong>：  <ul>
+<li>仅管理了业务程序本身，<strong>不管理依赖</strong>。  </li>
+<li>新增机器时需手动安装依赖，依赖复杂且多版本共存困难。  </li>
+<li>多个程序在同一台机器上可能发生依赖冲突（如 A 需要 X v1.0，而 B 需要 X v2.0，二者无法共存）。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>总结：依赖安装简单，但依赖冲突和版本差异导致部署效率低、稳定性差，运维人员和开发者都很痛苦。</p>
+</blockquote>
+<h3 id="2-虚拟机隔离"><a href="#2-虚拟机隔离" class="headerlink" title="2. 虚拟机隔离"></a>2. 虚拟机隔离</h3><ul>
+<li><strong>思路</strong>：将程序与依赖环境完全绑定，作为独立单元（虚拟机镜像）进行管理。  </li>
+<li><strong>优点</strong>：  <ul>
+<li>彻底解决依赖冲突问题。</li>
+</ul>
+</li>
+<li><strong>缺点</strong>：  <ul>
+<li><strong>镜像庞大</strong>：存储和传输成本高。  </li>
+<li><strong>启停缓慢</strong>：需要完整的操作系统启动。  </li>
+<li><strong>性能损耗大</strong>：多套内核进程导致资源浪费。</li>
+</ul>
+</li>
+</ul>
+<p>虚拟机解决了依赖冲突，但引入了新的性能与效率问题。</p>
+<hr>
+<h2 id="容器的基石：轻量化虚拟化技术"><a href="#容器的基石：轻量化虚拟化技术" class="headerlink" title="容器的基石：轻量化虚拟化技术"></a>容器的基石：轻量化虚拟化技术</h2><p>容器的目标是在解决依赖管理的同时，克服虚拟机的缺陷：<strong>镜像过大、启停缓慢、性能损耗</strong>。  </p>
+<h3 id="1-解决镜像过大：UnionFS"><a href="#1-解决镜像过大：UnionFS" class="headerlink" title="1. 解决镜像过大：UnionFS"></a>1. 解决镜像过大：UnionFS</h3><ul>
+<li><strong>虚拟机镜像庞大原因</strong>：每个镜像都包含操作系统的所有文件，存在大量冗余。  </li>
+<li><strong>优化思路</strong>：相同文件只保存一份，不同镜像共享，通过 <strong>Copy-on-Write</strong> 机制解决修改冲突。  </li>
+<li><strong>实现技术</strong>：联合文件系统（UnionFS，2004 年出现）。</li>
+</ul>
+<h3 id="2-解决启停缓慢：Namespace-Cgroups"><a href="#2-解决启停缓慢：Namespace-Cgroups" class="headerlink" title="2. 解决启停缓慢：Namespace + Cgroups"></a>2. 解决启停缓慢：Namespace + Cgroups</h3><ul>
+<li><strong>问题</strong>：虚拟机启停包含完整操作系统开销。  </li>
+<li><strong>解决</strong>：利用 Linux 的 <strong>Namespace</strong> 和 <strong>Cgroups</strong> 实现轻量级隔离：  <ul>
+<li><strong>Namespace</strong>：隔离文件系统、进程视图、通信、网络、用户权限。  </li>
+<li><strong>Cgroups</strong>：限制与分配 CPU、内存等硬件资源，避免资源抢占。</li>
+</ul>
+</li>
+<li><strong>代表</strong>：LXC（Linux Containers，2008 年成型）。</li>
+</ul>
+<h3 id="3-解决性能损耗：共享内核"><a href="#3-解决性能损耗：共享内核" class="headerlink" title="3. 解决性能损耗：共享内核"></a>3. 解决性能损耗：共享内核</h3><ul>
+<li><strong>虚拟机的损耗</strong>：多套操作系统导致重复进程与资源消耗。  </li>
+<li><strong>容器的优化</strong>：所有容器共享宿主机内核，避免冗余内核进程。  </li>
+<li><strong>结果</strong>：显著降低运行损耗，性能接近原生。</li>
+</ul>
+<hr>
+<h2 id="Docker-的出现"><a href="#Docker-的出现" class="headerlink" title="Docker 的出现"></a>Docker 的出现</h2><p>虽然容器相关技术（UnionFS、LXC）已经出现，但 <strong>缺乏完整的体系化方案</strong>。  </p>
+<h3 id="为什么是-Docker？"><a href="#为什么是-Docker？" class="headerlink" title="为什么是 Docker？"></a>为什么是 Docker？</h3><ul>
+<li><strong>整合核心技术</strong>：基于 LXC 和 UnionFS，结合镜像机制。  </li>
+<li><strong>标准化交付</strong>：提供完整的打包（Dockerfile）、版本管理（Image）、分发（Registry）、运行管理（Runtime）。  </li>
+<li><strong>易用性极高</strong>：满足了开发者和运维的需求，实现 <strong>“Build once, Run anywhere”</strong>。  </li>
+<li><strong>命名寓意</strong>：Docker &#x3D; 集装箱 → 软件交付标准化。  </li>
+<li><strong>开源传播</strong>：免费、开源，迅速成为容器领域的事实标准。</li>
+</ul>
+<hr>
+<h2 id="我们能学到什么？"><a href="#我们能学到什么？" class="headerlink" title="我们能学到什么？"></a>我们能学到什么？</h2><h3 id="1-面向需求而不是面向技术"><a href="#1-面向需求而不是面向技术" class="headerlink" title="1. 面向需求而不是面向技术"></a>1. 面向需求而不是面向技术</h3><ul>
+<li>真正有价值的产品解决的是 <strong>普遍痛点</strong>，而不是单纯追求技术上的极致。</li>
+</ul>
+<h3 id="2-技术领域的组合创新"><a href="#2-技术领域的组合创新" class="headerlink" title="2. 技术领域的组合创新"></a>2. 技术领域的组合创新</h3><ul>
+<li>Docker 的成功不是凭空创造，而是整合了已有的底层技术（UnionFS、LXC）。  </li>
+<li>要求工程师熟悉底层能力，能在合适时机进行组合。</li>
+</ul>
+<h3 id="3-渐进式、问题驱动"><a href="#3-渐进式、问题驱动" class="headerlink" title="3. 渐进式、问题驱动"></a>3. 渐进式、问题驱动</h3><ul>
+<li>技术演进是一个渐进的过程：  <ul>
+<li>直接部署 → 虚拟机 → 容器。</li>
+</ul>
+</li>
+<li>每一步都是为了解决新的问题，而不是一蹴而就。</li>
+</ul>
+<h3 id="4-避开定势思维"><a href="#4-避开定势思维" class="headerlink" title="4. 避开定势思维"></a>4. 避开定势思维</h3><ul>
+<li>直接部署：执着于依赖管理 → 失败。  </li>
+<li>虚拟机：执着于优化虚拟机 → 难以突破。  </li>
+<li>容器：换思路 → 通过系统底层能力实现轻量化隔离。</li>
+</ul>
+<blockquote>
+<p>启示：新的、更优秀的方案往往不是旧方案的改进，而是 <strong>根本性的思维变革</strong>。</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/08/31/%E6%8E%A2%E7%A9%B6docker/" data-id="cmezu0u0h000yempvhvky4qb4" data-title="探究docker" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-归并排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="article-date">
@@ -109,7 +230,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" data-id="cmera87gi000bewpv25rohekp" data-title="链表归并排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" data-id="cmezu0tzp000dempv04lv4nov" data-title="链表归并排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -162,7 +283,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/08/24/hello-world/" data-id="cmera87gb0003ewpv6l1the9a" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/08/24/hello-world/" data-id="cmezu0tze0003empv50ig26hw" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -224,7 +345,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/29/CISC%E5%92%8CRISC%E6%9E%B6%E6%9E%84/" data-id="cmera87g20000ewpv9gzxfgoc" data-title="CISC 与 RISC 架构" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/29/CISC%E5%92%8CRISC%E6%9E%B6%E6%9E%84/" data-id="cmezu0tz30000empv003eco6h" data-title="CISC 与 RISC 架构" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -294,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/29/CPU%E5%8E%9F%E7%90%86%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" data-id="cmera87g80001ewpv1z87crbi" data-title="CPU原理与性能优化" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/29/CPU%E5%8E%9F%E7%90%86%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" data-id="cmezu0tz90001empv5g22b2y3" data-title="CPU原理与性能优化" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -356,7 +477,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/28/%E5%86%85%E5%AD%98%E6%B1%A0%E5%8D%B0%E8%B1%A1/" data-id="cmera87ge0005ewpv3eo5hrax" data-title="内存池与内存申请机制" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/28/%E5%86%85%E5%AD%98%E6%B1%A0%E5%8D%B0%E8%B1%A1/" data-id="cmezu0tzi0005empvdqvg4yhs" data-title="内存池与内存申请机制" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -417,7 +538,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/27/%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" data-id="cmera87gm000gewpv32njdbmx" data-title="生产者-消费者模型与线程同步" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/27/%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E6%A8%A1%E5%9E%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" data-id="cmezu0u0j0010empvglqo1yz3" data-title="生产者-消费者模型与线程同步" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -485,7 +606,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/27/%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5/" data-id="cmera87gp000kewpv10k75mta" data-title="线程与同步" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/27/%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%90%8C%E6%AD%A5/" data-id="cmezu0u0k0012empv335eann3" data-title="线程与同步" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -533,7 +654,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/26/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" data-id="cmera87gl000fewpv8847bwf3" data-title="文件描述符" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/26/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" data-id="cmezu0u0i000zempv2hrv4ft4" data-title="文件描述符" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -586,76 +707,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/25/%E7%BB%88%E7%AB%AF%EF%BC%8C%E8%BF%9B%E7%A8%8B%E7%BB%84%E4%B8%8E%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" data-id="cmera87gp000mewpv19305cjw" data-title="终端、进程组与守护进程" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/03/25/%E7%BB%88%E7%AB%AF%EF%BC%8C%E8%BF%9B%E7%A8%8B%E7%BB%84%E4%B8%8E%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" data-id="cmezu0u0m0014empv5jz07e28" data-title="终端、进程组与守护进程" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" rel="tag">终端, 进程组, 会话, 守护进程</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-进程间通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="article-date">
-  <time class="dt-published" datetime="2025-03-25T10:32:00.000Z" itemprop="datePublished">2025-03-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/">进程间通信</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>学习完进程之后知道，进程之间是相对独立的，那自然要知道进程之间如何通信，分为三种：管道、内存映射和信号。  </p>
-<h2 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h2><p><strong>匿名管道</strong>：在内核区中开辟一个缓冲区来交流。具体就是一个进程写入数据，另一个进程读取数据，完成通信功能。匿名管道没有文件实体，只是一个缓冲区，用两个文件描述符，一个记录写端，一个记录读端。用 <code>write</code> 和 <code>read</code> 函数来实现通信。注意，管道的读写需要固定，只能读或者只能写，否则会混乱。</p>
-<p><strong>有名管道</strong>：通过一个文件实体（FIFO）来实现通信，通过该文件的文件描述符调用文件 IO 函数实现通信。若要实现双向通信，需要两个管道。</p>
-<p>在实时聊天实现中，由于父子进程共享终端读写，聊天双方可以用两个进程分别实现读写，读用 <code>read</code>，写用 <code>write</code>，文件描述符通过 <code>open</code> 获得。</p>
-<h2 id="信号通信"><a href="#信号通信" class="headerlink" title="信号通信"></a>信号通信</h2><p>信号是一种古老而简单的通信方式，当一个事件发生时，有进程向当前进程发送信号，当前进程便中断去处理。主要用途有两点：告知进程事件发生和强迫进程处理信号。  </p>
-<ul>
-<li>信号简单，不能携带大量信息，优先级高。</li>
-<li><code>alarm</code> 定时器就是一定时间后发送信号。</li>
-<li><code>signal</code> 和 <code>sigaction</code> 可以捕捉指定信号，并用回调函数处理。</li>
-<li>信号集：每个进程 PCB 中列出的信号状态清单，可设置阻塞信号。</li>
-</ul>
-<p>例如解决僵尸进程问题：当子进程结束时会向父进程发送 <code>SIGCHLD</code> 信号，父进程可以用 <code>sigaction</code> 捕捉信号，并执行 <code>wait</code> 回收子进程。</p>
-<h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>内存映射将硬盘数据映射到内存，通过修改内存来同步硬盘。父子进程间通信可在子进程创建前建立映射并获得地址，通过读写共享内存实现通信。  </p>
-<ul>
-<li>可实现文件拷贝：创建两个文件映射区，然后拷贝。</li>
-<li>父子进程可选择匿名映射，不创建文件实体。</li>
-<li>优点：安全性高，即便通信过程中进程崩溃，文件内容不会丢失。</li>
-</ul>
-<h2 id="共享内存（System-V）"><a href="#共享内存（System-V）" class="headerlink" title="共享内存（System V）"></a>共享内存（System V）</h2><p>共享内存是另一种进程通信方式，开辟一块内存让多个进程同时访问。  </p>
-<ul>
-<li>与内存映射不同，共享内存不涉及文件映射。</li>
-<li>速度快，适合少量多次通信。</li>
-<li>安全性不如内存映射，内存重置会丢失通信内容。</li>
-<li>一个进程不能独立删除共享内存，只能标记删除并脱离，所有进程脱离后自动删除。</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" data-id="cmera87hl001hewpv7ixy8geg" data-title="进程间通信" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">多进程, 进程通信</a></li></ul>
 
     </footer>
   </div>
@@ -715,6 +771,10 @@
       <ul>
         
           <li>
+            <a href="/2025/08/31/%E6%8E%A2%E7%A9%B6docker/">探究docker</a>
+          </li>
+        
+          <li>
             <a href="/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">链表归并排序</a>
           </li>
         
@@ -728,10 +788,6 @@
         
           <li>
             <a href="/2025/03/29/CPU%E5%8E%9F%E7%90%86%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">CPU原理与性能优化</a>
-          </li>
-        
-          <li>
-            <a href="/2025/03/28/%E5%86%85%E5%AD%98%E6%B1%A0%E5%8D%B0%E8%B1%A1/">内存池与内存申请机制</a>
           </li>
         
       </ul>
