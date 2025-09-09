@@ -4,19 +4,14 @@
   <meta charset="utf-8">
   
   
-  <title>进程间通信 | Fxp&#39;Blog</title>
+  <title>标签: 语法基础 | Fxp&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="学习完进程之后知道，进程之间是相对独立的，那自然要知道进程之间如何通信，分为三种：管道、内存映射和信号。   管道通信匿名管道：在内核区中开辟一个缓冲区来交流。具体就是一个进程写入数据，另一个进程读取数据，完成通信功能。匿名管道没有文件实体，只是一个缓冲区，用两个文件描述符，一个记录写端，一个记录读端。用 write 和 read 函数来实现通信。注意，管道的读写需要固定，只能读或者只能写，否则会">
-<meta property="og:type" content="article">
-<meta property="og:title" content="进程间通信">
-<meta property="og:url" content="http://example.com/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Fxp&#39;Blog">
+<meta property="og:url" content="http://example.com/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Fxp&#39;Blog">
-<meta property="og:description" content="学习完进程之后知道，进程之间是相对独立的，那自然要知道进程之间如何通信，分为三种：管道、内存映射和信号。   管道通信匿名管道：在内核区中开辟一个缓冲区来交流。具体就是一个进程写入数据，另一个进程读取数据，完成通信功能。匿名管道没有文件实体，只是一个缓冲区，用两个文件描述符，一个记录写端，一个记录读端。用 write 和 read 函数来实现通信。注意，管道的读写需要固定，只能读或者只能写，否则会">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-25T10:32:00.000Z">
-<meta property="article:modified_time" content="2025-08-24T14:20:39.208Z">
 <meta property="article:author" content="Fxp">
-<meta property="article:tag" content="多进程, 进程通信">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Fxp'Blog" type="application/atom+xml">
@@ -74,88 +69,39 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-进程间通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" class="article-date">
-  <time class="dt-published" datetime="2025-03-25T10:32:00.000Z" itemprop="datePublished">2025-03-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      进程间通信
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2025" class="archive-year">2025</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2025/09/09/go%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/" class="archive-article-date">
+  <time class="dt-published" datetime="2025-09-09T14:26:44.000Z" itemprop="datePublished">9月 9</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2025/09/09/go%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9/">go的注意事项</a>
     </h1>
   
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>学习完进程之后知道，进程之间是相对独立的，那自然要知道进程之间如何通信，分为三种：管道、内存映射和信号。  </p>
-<h2 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h2><p><strong>匿名管道</strong>：在内核区中开辟一个缓冲区来交流。具体就是一个进程写入数据，另一个进程读取数据，完成通信功能。匿名管道没有文件实体，只是一个缓冲区，用两个文件描述符，一个记录写端，一个记录读端。用 <code>write</code> 和 <code>read</code> 函数来实现通信。注意，管道的读写需要固定，只能读或者只能写，否则会混乱。</p>
-<p><strong>有名管道</strong>：通过一个文件实体（FIFO）来实现通信，通过该文件的文件描述符调用文件 IO 函数实现通信。若要实现双向通信，需要两个管道。</p>
-<p>在实时聊天实现中，由于父子进程共享终端读写，聊天双方可以用两个进程分别实现读写，读用 <code>read</code>，写用 <code>write</code>，文件描述符通过 <code>open</code> 获得。</p>
-<h2 id="信号通信"><a href="#信号通信" class="headerlink" title="信号通信"></a>信号通信</h2><p>信号是一种古老而简单的通信方式，当一个事件发生时，有进程向当前进程发送信号，当前进程便中断去处理。主要用途有两点：告知进程事件发生和强迫进程处理信号。  </p>
-<ul>
-<li>信号简单，不能携带大量信息，优先级高。</li>
-<li><code>alarm</code> 定时器就是一定时间后发送信号。</li>
-<li><code>signal</code> 和 <code>sigaction</code> 可以捕捉指定信号，并用回调函数处理。</li>
-<li>信号集：每个进程 PCB 中列出的信号状态清单，可设置阻塞信号。</li>
-</ul>
-<p>例如解决僵尸进程问题：当子进程结束时会向父进程发送 <code>SIGCHLD</code> 信号，父进程可以用 <code>sigaction</code> 捕捉信号，并执行 <code>wait</code> 回收子进程。</p>
-<h2 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h2><p>内存映射将硬盘数据映射到内存，通过修改内存来同步硬盘。父子进程间通信可在子进程创建前建立映射并获得地址，通过读写共享内存实现通信。  </p>
-<ul>
-<li>可实现文件拷贝：创建两个文件映射区，然后拷贝。</li>
-<li>父子进程可选择匿名映射，不创建文件实体。</li>
-<li>优点：安全性高，即便通信过程中进程崩溃，文件内容不会丢失。</li>
-</ul>
-<h2 id="共享内存（System-V）"><a href="#共享内存（System-V）" class="headerlink" title="共享内存（System V）"></a>共享内存（System V）</h2><p>共享内存是另一种进程通信方式，开辟一块内存让多个进程同时访问。  </p>
-<ul>
-<li>与内存映射不同，共享内存不涉及文件映射。</li>
-<li>速度快，适合少量多次通信。</li>
-<li>安全性不如内存映射，内存重置会丢失通信内容。</li>
-<li>一个进程不能独立删除共享内存，只能标记删除并脱离，所有进程脱离后自动删除。</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/03/25/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1/" data-id="cmfcmevsd001ka9pvbt9ge3t3" data-title="进程间通信" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">多进程, 进程通信</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2025/03/25/%E7%BB%88%E7%AB%AF%EF%BC%8C%E8%BF%9B%E7%A8%8B%E7%BB%84%E4%B8%8E%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          终端、进程组与守护进程
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2025/03/22/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">多进程与进程状态</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
 
 </section>
