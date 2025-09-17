@@ -71,6 +71,91 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-电话号码的字母组合" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" class="article-date">
+  <time class="dt-published" datetime="2025-09-17T14:43:22.000Z" itemprop="datePublished">2025-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/">电话号码的字母组合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本题为力扣 <strong>17. 电话号码的字母组合</strong>：<br>给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。</p>
+<p>给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。<br>2-&gt;abc 3-&gt;def 4-&gt;ghi 5-&gt;jkl 6-&gt;mno 7-&gt;pqrs 8-&gt;tuv 9-&gt;wxyz</p>
+<hr>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li><p>回溯其实分为递归回溯和标记回溯，递归回溯就是就借助递归函数传递局部变量，这样在递归返回的时候，不会影响上层的变量，但是可以传给下层，进而完成回溯的过程。</p>
+</li>
+<li><p>就这题来说，典型的可以用递归回溯，因为整个过程就是一个递归树，所以可以一直传递一个局部变量来完成。但是像路径回溯的题目，因为一个格子不知道什么时候会被占用，所以必须要采取共享变量，也就是标记回溯。</p>
+</li>
+<li><p>本题首先提前声明好数字和字母的映射，然后写一个递归的回溯函数，首先判断当前状态是否满足，加入结果中，返回。如果不满足，对当前数字的所有字母进行遍历回溯。</p>
+</li>
+</ol>
+<hr>
+<h2 id="代码实现（Go）"><a href="#代码实现（Go）" class="headerlink" title="代码实现（Go）"></a>代码实现（Go）</h2><pre><code class="language-go">func letterCombinations(digits string) []string &#123;
+    if len(digits) == 0&#123;
+        return []string&#123;&#125;
+    &#125;
+    phone := map[byte]string&#123;
+        &#39;2&#39;: &quot;abc&quot;,
+        &#39;3&#39;: &quot;def&quot;,
+        &#39;4&#39;: &quot;ghi&quot;,
+        &#39;5&#39;: &quot;jkl&quot;,
+        &#39;6&#39;: &quot;mno&quot;,
+        &#39;7&#39;: &quot;pqrs&quot;,
+        &#39;8&#39;: &quot;tuv&quot;,
+        &#39;9&#39;: &quot;wxyz&quot;,
+    &#125;
+
+    var res []string
+
+    var backtrace func(index int,path string)
+    backtrace = func(index int,path string)&#123;
+        if index == len(digits)&#123;
+            res = append(res,path)
+            return
+        &#125;
+
+        letters := phone[digits[index]]
+        for i :=0;i&lt;len(letters);i++&#123;
+            backtrace(index+1,path+string(letters[i]))
+        &#125;
+    &#125;
+    backtrace(0,&quot;&quot;)
+    return res
+&#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" data-id="cmfo4si8t0000u7pvc9tncw1m" data-title="电话号码的字母组合" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%9E%E6%BA%AF/" rel="tag">回溯</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%84%E5%90%88/" rel="tag">组合</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-深挖进程通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/15/%E6%B7%B1%E6%8C%96%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="article-date">
@@ -1182,58 +1267,6 @@ private:
 
 
   
-    <article id="post-归并排序" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" class="article-date">
-  <time class="dt-published" datetime="2025-08-25T14:58:29.000Z" itemprop="datePublished">2025-08-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/">链表归并排序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>归并排序也就是分治思想，时间复杂度为O（nlogn），且属于稳定排序</p>
-<p>流程：</p>
-<ol>
-<li><p><strong>分</strong>：递归地把数组分成两半，直到每个子数组只有一个元素（天然有序），其实也就是分到符合条件为止，在这里也就是有序。</p>
-</li>
-<li><p><strong>治</strong>：把两个有序子数组 <strong>合并</strong> 成一个更大的有序数组，也就是将已经符合条件的部分进行合并。</p>
-</li>
-<li><p>分解：<br>[4, 2, 1, 3]<br>→ [4, 2] [1, 3]<br>→ [4] [2] [1] [3]</p>
-</li>
-<li><p>合并：<br>[4] + [2] → [2, 4]<br>[1] + [3] → [1, 3]<br>[2, 4] + [1, 3] → [1, 2, 3, 4]</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/08/25/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" data-id="cmfcmevrn000fa9pv48ac6oa9" data-title="链表归并排序" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" rel="tag">算法总结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -1252,7 +1285,7 @@ private:
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" rel="tag">CPU, CISC, RISC, 指令集, 架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" rel="tag">CPU, 指令集, 流水线, 分支预测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/" rel="tag">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">IPC，进程通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LRU/" rel="tag">LRU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/" rel="tag">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag">事件驱动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" rel="tag">内存管理, 内存池, malloc, 指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" rel="tag">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">多线程,同步,异步,阻塞,非阻塞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" rel="tag">多进程, 进程状态</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">多进程, 进程通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" rel="tag">容器组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" rel="tag">容器编排</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" rel="tag">库文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" rel="tag">底层编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%90%E6%95%88/" rel="tag">提效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" rel="tag">文件描述符, 内核, IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E6%8A%A5/" rel="tag">日报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" rel="tag">栈区, 堆区, 系统调用, 标准库, 链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" rel="tag">算法总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%EF%BC%8C%E5%88%B7%E9%A2%98%EF%BC%8C%E5%9B%BE%E8%AE%BA%EF%BC%8CDFS/" rel="tag">算法，刷题，图论，DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" rel="tag">线程, 同步, 互斥锁, 读写锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" rel="tag">线程, 进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" rel="tag">终端, 进程组, 会话, 守护进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" rel="tag">虚拟机，linux，虚拟内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">语法基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" rel="tag">CPU, CISC, RISC, 指令集, 架构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" rel="tag">CPU, 指令集, 流水线, 分支预测</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DFS/" rel="tag">DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">IPC，进程通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LRU/" rel="tag">LRU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/" rel="tag">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/" rel="tag">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" rel="tag">事件驱动</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" rel="tag">内存管理, 内存池, malloc, 指针</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E7%A8%8B/" rel="tag">协程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%9E%E6%BA%AF/" rel="tag">回溯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" rel="tag">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" rel="tag">多线程,同步,异步,阻塞,非阻塞</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" rel="tag">多进程, 进程状态</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">多进程, 进程通信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" rel="tag">容器组</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" rel="tag">容器编排</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" rel="tag">库文件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" rel="tag">底层编译</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" rel="tag">归并排序</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8F%90%E6%95%88/" rel="tag">提效</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" rel="tag">文件描述符, 内核, IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E6%8A%A5/" rel="tag">日报</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" rel="tag">栈区, 堆区, 系统调用, 标准库, 链表</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" rel="tag">算法总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95%EF%BC%8C%E5%88%B7%E9%A2%98%EF%BC%8C%E5%9B%BE%E8%AE%BA%EF%BC%8CDFS/" rel="tag">算法，刷题，图论，DFS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" rel="tag">线程, 同步, 互斥锁, 读写锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" rel="tag">线程, 进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E5%90%88/" rel="tag">组合</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" rel="tag">终端, 进程组, 会话, 守护进程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag">编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" rel="tag">虚拟机，linux，虚拟内存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" rel="tag">语法基础</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
     </div>
   </div>
 
@@ -1262,7 +1295,7 @@ private:
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">CPU, CISC, RISC, 指令集, 架构</a> <a href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" style="font-size: 10px;">CPU, 指令集, 流水线, 分支预测</a> <a href="/tags/DFS/" style="font-size: 10px;">DFS</a> <a href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">IPC，进程通信</a> <a href="/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" style="font-size: 10px;">事件驱动</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 10px;">二叉树</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" style="font-size: 10px;">内存管理, 内存池, malloc, 指针</a> <a href="/tags/%E5%88%B7%E9%A2%98/" style="font-size: 20px;">刷题</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 10px;">多线程,同步,异步,阻塞,非阻塞</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" style="font-size: 10px;">多进程, 进程状态</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">多进程, 进程通信</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" style="font-size: 10px;">容器组</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" style="font-size: 10px;">容器编排</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">归并排序</a> <a href="/tags/%E6%8F%90%E6%95%88/" style="font-size: 10px;">提效</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" style="font-size: 10px;">文件描述符, 内核, IO</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a> <a href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">栈区, 堆区, 系统调用, 标准库, 链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" style="font-size: 10px;">算法总结</a> <a href="/tags/%E7%AE%97%E6%B3%95%EF%BC%8C%E5%88%B7%E9%A2%98%EF%BC%8C%E5%9B%BE%E8%AE%BA%EF%BC%8CDFS/" style="font-size: 10px;">算法，刷题，图论，DFS</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" style="font-size: 10px;">线程, 同步, 互斥锁, 读写锁</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">线程, 进程</a> <a href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">终端, 进程组, 会话, 守护进程</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" style="font-size: 10px;">虚拟机，linux，虚拟内存</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">语法基础</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 15px;">递归</a>
+      <a href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">CPU, CISC, RISC, 指令集, 架构</a> <a href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" style="font-size: 10px;">CPU, 指令集, 流水线, 分支预测</a> <a href="/tags/DFS/" style="font-size: 10px;">DFS</a> <a href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">IPC，进程通信</a> <a href="/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" style="font-size: 10px;">事件驱动</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 10px;">二叉树</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" style="font-size: 10px;">内存管理, 内存池, malloc, 指针</a> <a href="/tags/%E5%88%B7%E9%A2%98/" style="font-size: 20px;">刷题</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%9B%9E%E6%BA%AF/" style="font-size: 10px;">回溯</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 10px;">多线程,同步,异步,阻塞,非阻塞</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" style="font-size: 10px;">多进程, 进程状态</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">多进程, 进程通信</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" style="font-size: 10px;">容器组</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" style="font-size: 10px;">容器编排</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">归并排序</a> <a href="/tags/%E6%8F%90%E6%95%88/" style="font-size: 10px;">提效</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" style="font-size: 10px;">文件描述符, 内核, IO</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a> <a href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">栈区, 堆区, 系统调用, 标准库, 链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" style="font-size: 10px;">算法总结</a> <a href="/tags/%E7%AE%97%E6%B3%95%EF%BC%8C%E5%88%B7%E9%A2%98%EF%BC%8C%E5%9B%BE%E8%AE%BA%EF%BC%8CDFS/" style="font-size: 10px;">算法，刷题，图论，DFS</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" style="font-size: 10px;">线程, 同步, 互斥锁, 读写锁</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">线程, 进程</a> <a href="/tags/%E7%BB%84%E5%90%88/" style="font-size: 10px;">组合</a> <a href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">终端, 进程组, 会话, 守护进程</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" style="font-size: 10px;">虚拟机，linux，虚拟内存</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">语法基础</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 15px;">递归</a>
     </div>
   </div>
 
@@ -1284,6 +1317,10 @@ private:
       <ul>
         
           <li>
+            <a href="/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/">电话号码的字母组合</a>
+          </li>
+        
+          <li>
             <a href="/2025/09/15/%E6%B7%B1%E6%8C%96%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">深挖进程通信</a>
           </li>
         
@@ -1297,10 +1334,6 @@ private:
         
           <li>
             <a href="/2025/09/11/%E8%B7%AF%E5%BE%84%E6%80%BB%E5%92%8C/">路径总和</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/10/k8s%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/">k8s深入理解</a>
           </li>
         
       </ul>
