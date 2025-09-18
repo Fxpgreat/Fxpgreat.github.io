@@ -4,19 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>深挖进程通信 | Fxp&#39;Blog</title>
+  <title>数组中第k个最大元素 | Fxp&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="进程间通信（IPC）为什么进程之间可以通信？尽管用户进程空间有多个，但是内核空间只有一个，所有用户空间可以通过系统调用与内核空间交互，所以用户进程之间可以通过内核空间作为桥梁进行交互。 Linux 设置了两级保护机制：    0 级可由内核调用   3 级可由用户调用  进程空间通常为 3GB，最高的 1G 虚拟内存空间为所有进程和内核所共享。总的来说，内核就像中央控制室，一个进程可以将信息发给内">
+  <meta name="description" content="本题为力扣 215. 数组中第k个最大元素：给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。 请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。 你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。  解题思路 这题难度就在于不能用排序，就算是快排也要O（nlogn）,所以考虑借助堆来完成，也就是在插入时就排好序，用C++的优先队列来完成">
 <meta property="og:type" content="article">
-<meta property="og:title" content="深挖进程通信">
-<meta property="og:url" content="http://example.com/2025/09/15/%E6%B7%B1%E6%8C%96%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/index.html">
+<meta property="og:title" content="数组中第k个最大元素">
+<meta property="og:url" content="http://example.com/2025/09/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/index.html">
 <meta property="og:site_name" content="Fxp&#39;Blog">
-<meta property="og:description" content="进程间通信（IPC）为什么进程之间可以通信？尽管用户进程空间有多个，但是内核空间只有一个，所有用户空间可以通过系统调用与内核空间交互，所以用户进程之间可以通过内核空间作为桥梁进行交互。 Linux 设置了两级保护机制：    0 级可由内核调用   3 级可由用户调用  进程空间通常为 3GB，最高的 1G 虚拟内存空间为所有进程和内核所共享。总的来说，内核就像中央控制室，一个进程可以将信息发给内">
+<meta property="og:description" content="本题为力扣 215. 数组中第k个最大元素：给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。 请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。 你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。  解题思路 这题难度就在于不能用排序，就算是快排也要O（nlogn）,所以考虑借助堆来完成，也就是在插入时就排好序，用C++的优先队列来完成">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-15T15:07:06.000Z">
-<meta property="article:modified_time" content="2025-09-16T15:08:12.129Z">
+<meta property="article:published_time" content="2025-09-18T14:09:16.000Z">
+<meta property="article:modified_time" content="2025-09-18T14:26:19.093Z">
 <meta property="article:author" content="Fxp">
-<meta property="article:tag" content="IPC，进程通信">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="堆排序">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Fxp'Blog" type="application/atom+xml">
@@ -74,10 +76,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-深挖进程通信" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-数组中第k个最大元素" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2025/09/15/%E6%B7%B1%E6%8C%96%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="article-date">
-  <time class="dt-published" datetime="2025-09-15T15:07:06.000Z" itemprop="datePublished">2025-09-15</time>
+    <a href="/2025/09/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/" class="article-date">
+  <time class="dt-published" datetime="2025-09-18T14:09:16.000Z" itemprop="datePublished">2025-09-18</time>
 </a>
     
   </div>
@@ -88,7 +90,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      深挖进程通信
+      数组中第k个最大元素
     </h1>
   
 
@@ -96,102 +98,42 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="进程间通信（IPC）"><a href="#进程间通信（IPC）" class="headerlink" title="进程间通信（IPC）"></a>进程间通信（IPC）</h1><h2 id="为什么进程之间可以通信？"><a href="#为什么进程之间可以通信？" class="headerlink" title="为什么进程之间可以通信？"></a>为什么进程之间可以通信？</h2><p>尽管用户进程空间有多个，但是内核空间只有一个，所有用户空间可以通过系统调用与内核空间交互，所以用户进程之间可以通过内核空间作为桥梁进行交互。</p>
-<p>Linux 设置了两级保护机制：  </p>
-<ul>
-<li>0 级可由内核调用  </li>
-<li>3 级可由用户调用</li>
-</ul>
-<p>进程空间通常为 3GB，最高的 1G 虚拟内存空间为所有进程和内核所共享。总的来说，内核就像中央控制室，一个进程可以将信息发给内核，另一个进程再从内核获得，以实现进程间通信。</p>
-<h2 id="通信机制分类"><a href="#通信机制分类" class="headerlink" title="通信机制分类"></a>通信机制分类</h2><p>从机制上划分，进程间通信分为 <strong>共享内存式</strong> 和 <strong>消息传递式</strong>：</p>
-<ul>
-<li><p><strong>共享内存式</strong><br>通信中枢建立好通信信道后，通信双方之后的通信不需要通信中枢的协助。也正因如此，通信双方需要保证进程间同步，以保证数据读写的一致性，属于对称式的通信，双方平等在共享内存上进行通信。  </p>
+        <p>本题为力扣 <strong>215. 数组中第k个最大元素</strong>：<br>给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。</p>
+<p>请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。</p>
+<p>你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。</p>
+<hr>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li><p>这题难度就在于不能用排序，就算是快排也要O（nlogn）,所以考虑借助堆来完成，也就是在插入时就排好序，用C++的优先队列来完成</p>
 </li>
-<li><p><strong>消息传递式</strong><br>通信中枢建立好通信信道后，每次通信还都需要通信中枢的协助。  </p>
-<ul>
-<li><strong>无边界消息</strong>：是字节流，发过来是一个一个的字节，要靠进程自己设计如何区分消息的边界。  </li>
-<li><strong>有边界消息</strong>：发送和接收都是以消息为基本单位，类似于一封封完整的信件，接收方可以明确地知道每个消息的开始和结束位置，属于非对称式通信，比如客户端向服务端发起请求，服务端处理好后发回客户端。</li>
-</ul>
+<li><p>由于优先队列无法随机访问，所以在插入时需要保持小顶堆大小为k，小于k时就加入，等于k就踢掉，最后拿堆顶</p>
 </li>
-</ul>
-<h2 id="通信接口需求"><a href="#通信接口需求" class="headerlink" title="通信接口需求"></a>通信接口需求</h2><p>实现进程间通信需要实现三类接口：  </p>
-<ol>
-<li><strong>如何建立通信信道</strong>：对于非对称的通信，一般由服务端或者消费者建立信道，客户端或者生产者加入信道。  </li>
-<li><strong>如何找到并加入通信信道</strong>：一般是双方通过约定好的信道名字找到信道句柄，通过句柄加入通信信道。  </li>
-<li><strong>如何使用通信信道</strong>：一般跟对文件句柄的操作差不多。</li>
 </ol>
 <hr>
-<h2 id="常见的-IPC-方式"><a href="#常见的-IPC-方式" class="headerlink" title="常见的 IPC 方式"></a>常见的 IPC 方式</h2><h3 id="1-管道"><a href="#1-管道" class="headerlink" title="1. 管道"></a>1. 管道</h3><p>管道又分为 <strong>匿名管道</strong> 和 <strong>有名管道</strong>。</p>
-<ul>
-<li><p><strong>匿名管道</strong>  </p>
-<ul>
-<li>没有名字，是一种临时存放在内存中的单向数据通道，主要用于有关系的父子进程之间。  </li>
-<li>工作原理基于文件描述符：一个进程调用 <code>pipe</code> 函数创建匿名管道时，会得到两个文件描述符，<code>fd[0]</code> 用于读，<code>fd[1]</code> 用于写。  </li>
-<li>父子进程通过继承的文件描述符实现通信。  </li>
-<li><strong>优点</strong>：实现简单，效率高，基于内存，速度快。  </li>
-<li><strong>缺点</strong>：半双工，只能单向通信；仅限亲缘关系进程；缓冲区有限。</li>
-</ul>
-</li>
-<li><p><strong>有名管道（FIFO）</strong>  </p>
-<ul>
-<li>在文件系统中有一个名字，可以用在没有亲缘关系的进程之间。  </li>
-<li>使用 <code>mkfifo(&quot;myfifo&quot;, 0666)</code> 创建。  </li>
-<li><strong>优点</strong>：可在任意进程间通信，生命周期独立于进程。  </li>
-<li><strong>缺点</strong>：仍是半双工；需要文件系统操作，开销更大。</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="2-信号"><a href="#2-信号" class="headerlink" title="2. 信号"></a>2. 信号</h3><ul>
-<li>一种 <strong>异步事件通知机制</strong>。  </li>
-<li>示例：按下 <code>Ctrl + C</code> → 内核向前台进程发送 <code>SIGINT</code> → 默认终止运行。  </li>
-<li>进程处理信号的三种方式：  <ol>
-<li>执行默认动作  </li>
-<li>忽略信号  </li>
-<li>自定义信号处理函数</li>
-</ol>
-</li>
-<li><strong>优点</strong>：简单高效，能快速通知事件发生。  </li>
-<li><strong>缺点</strong>：信息量有限，仅有信号编号；执行时机不确定，可能造成竞态问题。</li>
-</ul>
-<hr>
-<h3 id="3-文件"><a href="#3-文件" class="headerlink" title="3. 文件"></a>3. 文件</h3><ul>
-<li>原理：不同进程通过 <strong>读写同一文件</strong> 实现数据共享。  </li>
-<li>场景：日志系统、配置文件共享。  </li>
-<li>问题：并发写入会导致数据覆盖和一致性问题。  </li>
-<li>解决办法：使用 <strong>文件锁</strong>（共享锁 &#x2F; 排他锁）。</li>
-</ul>
-<hr>
-<h3 id="4-共享内存"><a href="#4-共享内存" class="headerlink" title="4. 共享内存"></a>4. 共享内存</h3><ul>
-<li>允许多个进程访问同一内存区域，是一种高效的 IPC 机制。  </li>
-<li>常用函数：<code>shmget</code>、<code>shmat</code>、<code>shmdt</code>、<code>shmctl</code>。</li>
-</ul>
-<hr>
-<h3 id="5-消息队列"><a href="#5-消息队列" class="headerlink" title="5. 消息队列"></a>5. 消息队列</h3><ul>
-<li>类似一个存放消息的“信箱”。  </li>
-<li>本质：链表结构，每个节点存储一条消息（类型 + 内容）。  </li>
-<li>特点：  <ul>
-<li><strong>异步通信</strong>，发送方不必等待接收方。  </li>
-<li><strong>解耦</strong>：进程只需关心消息队列，不直接依赖对方。</li>
-</ul>
-</li>
-<li>应用：分布式系统中的任务请求和结果响应。</li>
-</ul>
-<hr>
-<h3 id="6-Socket-通信"><a href="#6-Socket-通信" class="headerlink" title="6. Socket 通信"></a>6. Socket 通信</h3><ul>
-<li>一种 <strong>网络通信形式</strong>。  </li>
-<li>可用于 <strong>本地进程通信</strong>，也可用于 <strong>远程进程通信</strong>。</li>
-</ul>
-<hr>
+<h2 id="代码实现（Go）"><a href="#代码实现（Go）" class="headerlink" title="代码实现（Go）"></a>代码实现（Go）</h2><pre><code class="language-go">class Solution &#123;
+public:
+    int findKthLargest(vector&lt;int&gt;&amp; nums, int k) &#123;
+        priority_queue&lt;int,vector&lt;int&gt;,greater&lt;int&gt;&gt; pq;
+        for(int num:nums)&#123;
+            if(pq.size()&lt;k)&#123;
+                pq.push(num);
+            &#125;else if(num&gt;pq.top())&#123;
+                pq.pop();
+                pq.push(num);
+            &#125;
+        &#125;
+        return pq.top();
+    &#125;
+&#125;;
+</code></pre>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/15/%E6%B7%B1%E6%8C%96%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" data-id="cmfpi7ntc000u4rpvbf0y3tez" data-title="深挖进程通信" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://example.com/2025/09/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/" data-id="cmfpi7nta000r4rpvdk9782eh" data-title="数组中第k个最大元素" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" rel="tag">IPC，进程通信</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/" rel="tag">堆排序</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
 
     </footer>
   </div>
@@ -199,19 +141,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          电话号码的字母组合
-        
-      </div>
-    </a>
   
-  
-    <a href="/2025/09/14/AI%E7%BC%96%E7%A8%8B%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%8A%80%E5%B7%A7/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/09/17/%E7%94%B5%E8%AF%9D%E5%8F%B7%E7%A0%81%E7%9A%84%E5%AD%97%E6%AF%8D%E7%BB%84%E5%90%88/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">AI编程提示词技巧</div>
+      <div class="article-nav-title">电话号码的字母组合</div>
     </a>
   
 </nav>
