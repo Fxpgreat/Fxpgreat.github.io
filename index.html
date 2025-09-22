@@ -71,6 +71,83 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-二叉树的最近公共祖先" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" class="article-date">
+  <time class="dt-published" datetime="2025-09-22T14:48:04.000Z" itemprop="datePublished">2025-09-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/09/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">二叉树的最近公共祖先</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本题为力扣 <strong>236. 二叉树的最近公共祖先</strong>：<br>给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p>百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”</p>
+<hr>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
+<li><p>之前提到过，递归有传递变量和传递指针，这题就算传递指针的，下层改变指针值后会返回给上层。</p>
+</li>
+<li><p>递归入手一定要从函数本身入手，而不要过多考虑递归的变化过程，当前函数，对于传入的root，要如何处理？1.如果当前的节点为空，那当然直接返回空了，那也就是节点本身 2.如果当前节点是p或者q，说明找到了一个，返回当前节点 3.如果当前节点非空也非p或者q，那就分别递归左右子树，会获得两个递归结果，left和right，分别代表左跟右有没有pq，left !&#x3D; nullptr &amp;&amp; right !&#x3D; nullptr → 说明 p 在一边，q 在另一边，那么当前 root 就是最近公共祖先。 如果只有一边非空（比如 left 非空，right 为空），那就把非空的那个返回给上层。因为另一个目标节点肯定在其子树中。</p>
+</li>
+</ol>
+<hr>
+<h2 id="代码实现（C-）"><a href="#代码实现（C-）" class="headerlink" title="代码实现（C++）"></a>代码实现（C++）</h2><pre><code class="language-cpp">/**
+ * Definition for a binary tree node.
+ * struct TreeNode &#123;
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) &#123;&#125;
+ * &#125;;
+ */
+class Solution &#123;
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) &#123;
+        if(root == nullptr||root ==p ||root==q)&#123;
+            return root;
+        &#125;
+
+        TreeNode* left = lowestCommonAncestor(root-&gt;left,p,q);
+        TreeNode* right = lowestCommonAncestor(root-&gt;right,p,q);
+
+        if(left!= nullptr &amp;&amp; right!=nullptr)&#123;
+            return root;
+        &#125;
+        return left!=nullptr?left:right;
+
+    &#125;
+&#125;;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/09/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" data-id="cmfvaxnqa0000ywpvcttn490n" data-title="二叉树的最近公共祖先" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%80%92%E5%BD%92/" rel="tag">递归</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-数组中第k个最大元素" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/09/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/" class="article-date">
@@ -1081,131 +1158,11 @@ func helper(node *TreeNode, min *int, max *int) bool &#123;
 
 
   
-    <article id="post-LRU算法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/09/LRU%E7%AE%97%E6%B3%95/" class="article-date">
-  <time class="dt-published" datetime="2025-09-09T13:13:18.000Z" itemprop="datePublished">2025-09-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/09/09/LRU%E7%AE%97%E6%B3%95/">LRU算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>本题为力扣 <strong>146. LRU 缓存</strong>：<br>请你设计并实现一个满足 <strong>LRU (最近最少使用) 缓存</strong> 约束的数据结构。</p>
-<hr>
-<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>实现 <code>LRUCache</code> 类：</p>
-<ul>
-<li><code>LRUCache(int capacity)</code>：以正整数作为容量 capacity 初始化 LRU 缓存。</li>
-<li><code>int get(int key)</code>：如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1。</li>
-<li><code>void put(int key, int value)</code>：如果关键字 key 已经存在，则变更其数据值 value；如果不存在，则向缓存中插入该组 key-value 。<br>如果插入操作导致关键字数量超过 capacity ，则应该逐出最久未使用的关键字。</li>
-</ul>
-<p>要求：函数 <code>get</code> 和 <code>put</code> 必须以 <strong>O(1)</strong> 的平均时间复杂度运行。</p>
-<hr>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>分为三步：</p>
-<ol>
-<li><p><strong>构造函数</strong><br>初始化 <code>LRUCache</code> 类，维护好容量即可。</p>
-</li>
-<li><p><strong>核心思想</strong><br>整个算法就是实现两个主要操作：<code>get</code> 和 <code>put</code>。  </p>
-<ul>
-<li>只要有数据被访问（无论是读还是写），都属于“最近使用”，放到链表头。</li>
-</ul>
-</li>
-<li><p><strong>具体操作</strong>  </p>
-<ul>
-<li><strong>GET</strong>：查找 key → value，如果没找到返回 -1；如果找到了，移动该节点到链表头。  </li>
-<li><strong>PUT</strong>：  <ul>
-<li>如果 key 存在，更新 value 并移动到链表头。  </li>
-<li>如果 key 不存在，判断容量是否已满：  <ul>
-<li>若已满，删除链表尾部节点（最久未使用）。  </li>
-<li>插入新的 <code>(key,value)</code> 到链表头。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h2 id="代码实现-C"><a href="#代码实现-C" class="headerlink" title="代码实现 (C++)"></a>代码实现 (C++)</h2><pre><code class="language-cpp">#include &lt;list&gt;
-#include &lt;unordered_map&gt;
-using namespace std;
-
-class LRUCache &#123;
-public:
-    LRUCache(int capacity) &#123;
-        this-&gt;capacity = capacity;
-    &#125;
-    
-    int get(int key) &#123;
-        auto it = map.find(key);
-        if (it == map.end()) &#123;
-            return -1;
-        &#125;
-        // 移动到链表头
-        cache.splice(cache.begin(), cache, it-&gt;second);
-        return it-&gt;second-&gt;second;
-    &#125;
-    
-    void put(int key, int value) &#123;
-        auto it = map.find(key);
-        if (it != map.end()) &#123;
-            // 更新 value，并移动到链表头
-            it-&gt;second-&gt;second = value;
-            cache.splice(cache.begin(), cache, it-&gt;second);
-        &#125; else &#123;
-            // 容量已满，删除尾部
-            if (cache.size() == capacity) &#123;
-                auto del = cache.back();
-                map.erase(del.first);
-                cache.pop_back();
-            &#125;
-            // 插入新节点到头部
-            cache.emplace_front(key, value);
-            map[key] = cache.begin();
-        &#125;
-    &#125;
-
-private:
-    int capacity;
-    list&lt;pair&lt;int,int&gt;&gt; cache; // 双向链表：头=最近使用，尾=最久未使用
-    unordered_map&lt;int, list&lt;pair&lt;int,int&gt;&gt;::iterator&gt; map; // 哈希表：key -&gt; 链表节点
-&#125;;
-</code></pre>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/09/LRU%E7%AE%97%E6%B3%95/" data-id="cmfpi7nst00044rpv1fx19926" data-title="LRU算法" class="article-share-link"><span class="fa fa-share">分享</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LRU/" rel="tag">LRU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
   </nav>
 
 </section>
@@ -1229,7 +1186,7 @@ private:
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">CPU, CISC, RISC, 指令集, 架构</a> <a href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" style="font-size: 10px;">CPU, 指令集, 流水线, 分支预测</a> <a href="/tags/DFS/" style="font-size: 15px;">DFS</a> <a href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">IPC，进程通信</a> <a href="/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" style="font-size: 10px;">事件驱动</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 10px;">二叉树</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" style="font-size: 10px;">内存管理, 内存池, malloc, 指针</a> <a href="/tags/%E5%88%B7%E9%A2%98/" style="font-size: 20px;">刷题</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%9B%9E%E6%BA%AF/" style="font-size: 10px;">回溯</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">堆排序</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 10px;">多线程,同步,异步,阻塞,非阻塞</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" style="font-size: 10px;">多进程, 进程状态</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">多进程, 进程通信</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" style="font-size: 10px;">容器组</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" style="font-size: 10px;">容器编排</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">归并排序</a> <a href="/tags/%E6%8F%90%E6%95%88/" style="font-size: 10px;">提效</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" style="font-size: 10px;">文件描述符, 内核, IO</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a> <a href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">栈区, 堆区, 系统调用, 标准库, 链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" style="font-size: 10px;">算法总结</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" style="font-size: 10px;">线程, 同步, 互斥锁, 读写锁</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">线程, 进程</a> <a href="/tags/%E7%BB%84%E5%90%88/" style="font-size: 10px;">组合</a> <a href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">终端, 进程组, 会话, 守护进程</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" style="font-size: 10px;">虚拟机，linux，虚拟内存</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">语法基础</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 15px;">递归</a>
+      <a href="/tags/CPU-CISC-RISC-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">CPU, CISC, RISC, 指令集, 架构</a> <a href="/tags/CPU-%E6%8C%87%E4%BB%A4%E9%9B%86-%E6%B5%81%E6%B0%B4%E7%BA%BF-%E5%88%86%E6%94%AF%E9%A2%84%E6%B5%8B/" style="font-size: 10px;">CPU, 指令集, 流水线, 分支预测</a> <a href="/tags/DFS/" style="font-size: 13.33px;">DFS</a> <a href="/tags/IPC%EF%BC%8C%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">IPC，进程通信</a> <a href="/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/k8s/" style="font-size: 10px;">k8s</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8/" style="font-size: 10px;">事件驱动</a> <a href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" style="font-size: 13.33px;">二叉树</a> <a href="/tags/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-%E5%86%85%E5%AD%98%E6%B1%A0-malloc-%E6%8C%87%E9%92%88/" style="font-size: 10px;">内存管理, 内存池, malloc, 指针</a> <a href="/tags/%E5%88%B7%E9%A2%98/" style="font-size: 20px;">刷题</a> <a href="/tags/%E5%8D%8F%E7%A8%8B/" style="font-size: 10px;">协程</a> <a href="/tags/%E5%9B%9E%E6%BA%AF/" style="font-size: 10px;">回溯</a> <a href="/tags/%E5%9B%BE%E8%AE%BA/" style="font-size: 10px;">图论</a> <a href="/tags/%E5%A0%86%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">堆排序</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85-%E4%BA%92%E6%96%A5%E9%94%81-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F-%E4%BF%A1%E5%8F%B7%E9%87%8F/" style="font-size: 10px;">多线程, 生产者消费者, 互斥锁, 条件变量, 信号量</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E5%BC%82%E6%AD%A5-%E9%98%BB%E5%A1%9E-%E9%9D%9E%E9%98%BB%E5%A1%9E/" style="font-size: 10px;">多线程,同步,异步,阻塞,非阻塞</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81/" style="font-size: 10px;">多进程, 进程状态</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" style="font-size: 10px;">多进程, 进程通信</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BB%84/" style="font-size: 10px;">容器组</a> <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" style="font-size: 10px;">容器编排</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E5%BA%93%E6%96%87%E4%BB%B6/" style="font-size: 10px;">库文件</a> <a href="/tags/%E5%BA%95%E5%B1%82%E7%BC%96%E8%AF%91/" style="font-size: 10px;">底层编译</a> <a href="/tags/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/" style="font-size: 10px;">归并排序</a> <a href="/tags/%E6%8F%90%E6%95%88/" style="font-size: 10px;">提效</a> <a href="/tags/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-%E5%86%85%E6%A0%B8-IO/" style="font-size: 10px;">文件描述符, 内核, IO</a> <a href="/tags/%E6%97%A5%E6%8A%A5/" style="font-size: 10px;">日报</a> <a href="/tags/%E6%A0%88%E5%8C%BA-%E5%A0%86%E5%8C%BA-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8-%E6%A0%87%E5%87%86%E5%BA%93-%E9%93%BE%E8%A1%A8/" style="font-size: 10px;">栈区, 堆区, 系统调用, 标准库, 链表</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 20px;">算法</a> <a href="/tags/%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" style="font-size: 10px;">算法总结</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E5%90%8C%E6%AD%A5-%E4%BA%92%E6%96%A5%E9%94%81-%E8%AF%BB%E5%86%99%E9%94%81/" style="font-size: 10px;">线程, 同步, 互斥锁, 读写锁</a> <a href="/tags/%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">线程, 进程</a> <a href="/tags/%E7%BB%84%E5%90%88/" style="font-size: 10px;">组合</a> <a href="/tags/%E7%BB%88%E7%AB%AF-%E8%BF%9B%E7%A8%8B%E7%BB%84-%E4%BC%9A%E8%AF%9D-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">终端, 进程组, 会话, 守护进程</a> <a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">编程</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8Clinux%EF%BC%8C%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" style="font-size: 10px;">虚拟机，linux，虚拟内存</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%AD%E6%B3%95%E5%9F%BA%E7%A1%80/" style="font-size: 10px;">语法基础</a> <a href="/tags/%E9%80%92%E5%BD%92/" style="font-size: 16.67px;">递归</a>
     </div>
   </div>
 
@@ -1251,6 +1208,10 @@ private:
       <ul>
         
           <li>
+            <a href="/2025/09/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">二叉树的最近公共祖先</a>
+          </li>
+        
+          <li>
             <a href="/2025/09/18/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%AC%ACk%E4%B8%AA%E6%9C%80%E5%A4%A7%E5%85%83%E7%B4%A0/">数组中第k个最大元素</a>
           </li>
         
@@ -1264,10 +1225,6 @@ private:
         
           <li>
             <a href="/2025/09/14/AI%E7%BC%96%E7%A8%8B%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%8A%80%E5%B7%A7/">AI编程提示词技巧</a>
-          </li>
-        
-          <li>
-            <a href="/2025/09/14/%E5%B2%9B%E5%B1%BF%E6%95%B0%E9%87%8F/">岛屿数量</a>
           </li>
         
       </ul>
