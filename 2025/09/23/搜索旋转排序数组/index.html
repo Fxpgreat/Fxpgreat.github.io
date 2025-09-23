@@ -4,14 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>标签: 容器编排 | Fxp&#39;Blog</title>
+  <title>搜索旋转排序数组 | Fxp&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Fxp&#39;Blog">
-<meta property="og:url" content="http://example.com/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/index.html">
+  <meta name="description" content="本题为力扣 33. 搜索旋转排序数组：整数数组 nums 按升序排列，数组中的值 互不相同 。 在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 向左旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搜索旋转排序数组">
+<meta property="og:url" content="http://example.com/2025/09/23/%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="Fxp&#39;Blog">
+<meta property="og:description" content="本题为力扣 33. 搜索旋转排序数组：整数数组 nums 按升序排列，数组中的值 互不相同 。 在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 向左旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-23T15:57:06.000Z">
+<meta property="article:modified_time" content="2025-09-23T16:11:06.447Z">
 <meta property="article:author" content="Fxp">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="二分查找">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Fxp'Blog" type="application/atom+xml">
@@ -69,39 +76,123 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2025/09/10/k8s%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/" class="archive-article-date">
-  <time class="dt-published" datetime="2025-09-10T15:37:43.000Z" itemprop="datePublished">9月 10</time>
+        <section id="main"><article id="post-搜索旋转排序数组" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/09/23/%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" class="article-date">
+  <time class="dt-published" datetime="2025-09-23T15:57:06.000Z" itemprop="datePublished">2025-09-23</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/09/10/k8s%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3/">k8s深入理解</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      搜索旋转排序数组
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>本题为力扣 <strong>33. 搜索旋转排序数组</strong>：<br>整数数组 nums 按升序排列，数组中的值 互不相同 。</p>
+<p>在传递给函数之前，nums 在预先未知的某个下标 k（0 &lt;&#x3D; k &lt; nums.length）上进行了 向左旋转，使数组变为 [nums[k], nums[k+1], …, nums[n-1], nums[0], nums[1], …, nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 下标 3 上向左旋转后可能变为 [4,5,6,7,0,1,2] 。</p>
+<p>给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。</p>
+<p>你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。</p>
+<hr>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>1.先来梳理一下二分查找的区间开闭问题：</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>区间含义</th>
+<th>初始 right</th>
+<th>循环条件</th>
+<th>mid 更新</th>
+<th>注意点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>左闭右开 <code>[left, right)</code></td>
+<td>包含 left，不包含 right</td>
+<td><code>nums.size()</code></td>
+<td><code>while(left &lt; right)</code></td>
+<td><code>left = mid+1</code> 或 <code>right = mid</code></td>
+<td>right 本身不可访问，只是边界</td>
+</tr>
+<tr>
+<td>全闭 <code>[left, right]</code></td>
+<td>包含 left 和 right</td>
+<td><code>nums.size()-1</code></td>
+<td><code>while(left &lt;= right)</code></td>
+<td><code>left = mid+1</code> 或 <code>right = mid-1</code></td>
+<td>right 可访问，mid ±1 不会漏元素</td>
+</tr>
+</tbody></table>
+<p>2.然后本题比较特殊的就是，需要判断target可能在哪半边，通过直接对比mid值和左右边界来进行判断，如果nums[mid]大于左边界，说明target可能在左边，再进行细节判断，将target和mid与left进行对比，如果大于mid或者大于left，说明不在左半边，收缩左边界，否则说明在左半边，收缩右边界，以此类推</p>
+<hr>
+<h2 id="代码实现（C-）-左闭右开写法"><a href="#代码实现（C-）-左闭右开写法" class="headerlink" title="代码实现（C++）-左闭右开写法"></a>代码实现（C++）-左闭右开写法</h2><pre><code class="language-cpp">class Solution &#123;
+public:
+    int search(vector&lt;int&gt;&amp; nums, int target) &#123;
+        int left = 0;
+        int right = nums.size(); // [0, n)
+
+        while(left &lt; right) &#123;
+            int mid = (left + right) / 2;
+
+            if(nums[mid] == target) &#123;
+                return mid;
+            &#125;
+
+            if(nums[mid] &gt;= nums[left]) &#123;
+                if(nums[left] &lt;= target &amp;&amp; target &lt; nums[mid]) &#123;
+                    right = mid; 
+                &#125; else &#123;
+                    left = mid + 1;
+                &#125;
+            &#125; else &#123;
+                if(nums[mid] &lt; target &amp;&amp; target &lt; nums[right-1]) &#123; 
+                    left = mid + 1;
+                &#125; else if (nums[mid] &lt; target &amp;&amp; target == nums[right-1]) &#123;
+                    return right-1;
+                &#125; else &#123;
+                    right = mid;
+                &#125;
+            &#125;
+        &#125;
+        return -1;
+    &#125;
+&#125;;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/09/23/%E6%90%9C%E7%B4%A2%E6%97%8B%E8%BD%AC%E6%8E%92%E5%BA%8F%E6%95%B0%E7%BB%84/" data-id="cmfwr5pkk0000nypv89zd74uu" data-title="搜索旋转排序数组" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="tag">二分查找</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%88%B7%E9%A2%98/" rel="tag">刷题</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/09/22/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">二叉树的最近公共祖先</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 
 </section>
